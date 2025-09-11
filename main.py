@@ -1,6 +1,7 @@
 import pyrealsense2 as rs
 import cv2
 from vision import Vision
+import trackbar
 
 def main():
     vision = Vision()
@@ -23,12 +24,12 @@ def main():
     try:
         while True:
             images, valid = vision.get_aligned_frames()
+            filtered_image = trackbar.trackbar_filter(images)
             if not valid:
                 continue
             cv2.namedWindow('Align Example', cv2.WINDOW_NORMAL)
-            cv2.imshow('Align Example', images)
+            cv2.imshow('Align Example', filtered_image)
             key = cv2.waitKey(1)
-            # Press esc or 'q' to close the image window
             if key & 0xFF == ord('q') or key == 27:
                 cv2.destroyAllWindows()
                 break
