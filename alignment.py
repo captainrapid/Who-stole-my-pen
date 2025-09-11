@@ -47,7 +47,7 @@ print("Depth Scale is: " , depth_scale)
 
 # We will be removing the background of objects more than
 #  clipping_distance_in_meters meters away
-clipping_distance_in_meters = 3 #3 meters
+clipping_distance_in_meters = 1 #1 meter
 clipping_distance = clipping_distance_in_meters / depth_scale
 
 # Create an align object
@@ -85,7 +85,7 @@ try:
         # Render images:
         #   depth align to color on left
         #   depth on right
-        depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.3), cv2.COLORMAP_JET)
+        depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)
         images = np.hstack((bg_removed, depth_colormap))
 
         cv2.namedWindow('Align Example', cv2.WINDOW_NORMAL)

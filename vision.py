@@ -25,6 +25,7 @@ class Vision:
 
 
     def get_frame(self):
+        self.pipeline = rs.pipeline()
         # Start streaming
         self.profile = self.pipeline.start(self.config)
         # Getting the depth sensor's depth scale (see rs-align example for explanation)
@@ -65,6 +66,7 @@ class Vision:
     
     
     def get_aligned_frames(self):
+        self.align  = rs.align(rs.stream.color)
         # Streaming loop
         # Get frameset of color and depth
         frames = self.pipeline.wait_for_frames()
