@@ -28,6 +28,4 @@ def colorspace_filter(image):
     mask_bgr = cv.cvtColor(mask, cv.COLOR_GRAY2BGR)
     # Bitwise-AND mask and original image
     res = cv.bitwise_and(image,image, mask= mask)
-    return mask_bgr
-
-cv.destroyAllWindows()
+    return mask_bgr, mask, res

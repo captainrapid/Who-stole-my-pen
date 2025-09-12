@@ -5,6 +5,7 @@ import trackbar
 import colorspace
 import numpy as np
 import threshold
+import contour
 
 def main():
     vision = Vision()
@@ -26,13 +27,15 @@ def main():
 
     while True:
         images, valid = vision.get_aligned_frames()
-        filtered_image = colorspace.colorspace_filter(images)
+        #filtered_image = contour.contour_filter(images)
+        contour.contour_filter(images)
         if not valid:
             continue
         #cv2.imshow('Original', images)
         #cv2.imshow('Filtered', filtered_image)
-        result_image = np.hstack((images, filtered_image))
-        cv2.imshow('Result', result_image)
+
+        cv2.imshow('Original', images)
+        #cv2.imshow('Result', filtered_image)
         key = cv2.waitKey(1)
         if key & 0xFF == ord('q') or key == 27:
             cv2.destroyAllWindows()
