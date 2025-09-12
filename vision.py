@@ -37,33 +37,7 @@ class Vision:
         #  clipping_distance_in_meters meters away
         clipping_distance_in_meters = 1 #1 meter
         self.clipping_distance = clipping_distance_in_meters / depth_scale
-    
 
-    def __enter__(self):
-        # Create a pipeline
-        self.pipeline = rs.pipeline()
-        # Get device product line for setting a supporting resolution
-        pipeline_wrapper = rs.pipeline_wrapper(self.pipeline)
-        pipeline_profile = self.config.resolve(pipeline_wrapper)
-        device = pipeline_profile.get_device()
-        device_product_line = str(device.get_info(rs.camera_info.product_line))
-
-        found_rgb = False
-        for s in device.sensors:
-            if s.get_info(rs.camera_info.name) == 'RGB Camera':
-                found_rgb = True
-                break
-        if not found_rgb:
-            print("The demo requires Depth camera with Color sensor")
-            exit(0)
-
-        # Create an align object
-        # rs.align allows us to perform alignment of depth frames to others frames
-        # The "align_to" is the stream type to which we plan to align depth frames.
-        align_to = rs.stream.color
-        self.align = rs.align(align_to)
-
-        self.clipping_distance = None
     
     
     def get_aligned_frames(self):

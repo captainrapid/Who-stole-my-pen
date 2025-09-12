@@ -19,7 +19,6 @@ def contour_filter(image, vision):
     if M['m00'] != 0:
         cx = M['m10']/M['m00']
         cy = M['m01']/M['m00']
-        #print(f"cx: {cx}, cy: {cy}")
         cv.circle(image, (int(cx), int(cy)), 7, (0,0,255), -1)
         # Get the 3D position of the centroid
         x, y, z = position.position(vision, int(cx), int(cy))
