@@ -11,8 +11,8 @@ def colorspace_filter(image):
 
     if not hasattr(colorspace_filter, "_inited"):
         cv.namedWindow(title_window, cv.WINDOW_NORMAL)     # safe if already exists
-        cv.createTrackbar(f'Low x {alpha_slider_max}', title_window, 0, alpha_slider_max, lambda v: None)
-        cv.createTrackbar(f'High x {alpha_slider_max}', title_window, 0, alpha_slider_max, lambda v: None)
+        cv.createTrackbar(f'Low x {alpha_slider_max}', title_window, 108, alpha_slider_max, lambda v: None)
+        cv.createTrackbar(f'High x {alpha_slider_max}', title_window, 124, alpha_slider_max, lambda v: None)
 
         colorspace_filter._inited = True
 
@@ -26,7 +26,7 @@ def colorspace_filter(image):
     # Threshold the HSV image to get only the color required
     mask = cv.inRange(hsv, lower_color, upper_color)
     mask = cv.bilateralFilter(mask,9,75,75)
-    mask = cv.GaussianBlur(mask,(5,5),0)
+    mask = cv.GaussianBlur(mask,(25,25),0)
     mask_bgr = cv.cvtColor(mask, cv.COLOR_GRAY2BGR)
     # Bitwise-AND mask and original image
     res = cv.bitwise_and(image,image, mask= mask)
