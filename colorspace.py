@@ -9,9 +9,12 @@ def colorspace_filter(image):
     # Convert BGR to HSV
     hsv = cv.cvtColor(image, cv.COLOR_BGR2HSV)
 
+    hsv = cv.bilateralFilter(hsv,9,75,75)
+    hsv = cv.GaussianBlur(hsv,(35,35),0)
+
     if not hasattr(colorspace_filter, "_inited"):
         cv.namedWindow(title_window, cv.WINDOW_NORMAL)     # safe if already exists
-        cv.createTrackbar(f'Low x {alpha_slider_max}', title_window, 108, alpha_slider_max, lambda v: None)
+        cv.createTrackbar(f'Low x {alpha_slider_max}', title_window, 90, alpha_slider_max, lambda v: None)
         cv.createTrackbar(f'High x {alpha_slider_max}', title_window, 124, alpha_slider_max, lambda v: None)
 
         colorspace_filter._inited = True
@@ -22,11 +25,9 @@ def colorspace_filter(image):
     # define range of the color in HSV
     lower_color = np.array([lower_color,80,50], dtype=np.uint8)
     upper_color = np.array([upper_color,255,220], dtype=np.uint8)
-    print(f"Low: {lower_color}, High: {upper_color}")
+    #print(f"Low: {lower_color}, High: {upper_color}")
     # Threshold the HSV image to get only the color required
     mask = cv.inRange(hsv, lower_color, upper_color)
-    mask = cv.bilateralFilter(mask,9,75,75)
-    mask = cv.GaussianBlur(mask,(25,25),0)
     mask_bgr = cv.cvtColor(mask, cv.COLOR_GRAY2BGR)
     # Bitwise-AND mask and original image
     res = cv.bitwise_and(image,image, mask= mask)
