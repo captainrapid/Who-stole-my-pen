@@ -25,6 +25,8 @@ def colorspace_filter(image):
     print(f"Low: {lower_color}, High: {upper_color}")
     # Threshold the HSV image to get only the color required
     mask = cv.inRange(hsv, lower_color, upper_color)
+    mask = cv.bilateralFilter(mask,9,75,75)
+    mask = cv.GaussianBlur(mask,(5,5),0)
     mask_bgr = cv.cvtColor(mask, cv.COLOR_GRAY2BGR)
     # Bitwise-AND mask and original image
     res = cv.bitwise_and(image,image, mask= mask)
