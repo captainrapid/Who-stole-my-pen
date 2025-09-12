@@ -15,6 +15,7 @@ class Vision:
         self.profile = None
         self.align = None
         self.clipping_distance = None
+        self.aligned_frames = None
 
         # Create a config and configure the pipeline to stream
         #  different resolutions of color and depth streams
@@ -73,11 +74,11 @@ class Vision:
         # frames.get_depth_frame() is a 640x360 depth image
 
         # Align the depth frame to color frame
-        aligned_frames = self.align.process(frames)
+        self.aligned_frames = self.align.process(frames)
 
         # Get aligned frames
-        aligned_depth_frame = aligned_frames.get_depth_frame() # aligned_depth_frame is a 640x480 depth image
-        color_frame = aligned_frames.get_color_frame()
+        aligned_depth_frame = self.aligned_frames.get_depth_frame() # aligned_depth_frame is a 640x480 depth image
+        color_frame = self.aligned_frames.get_color_frame()
 
         # Validate that both frames are valid
         valid = aligned_depth_frame and color_frame
