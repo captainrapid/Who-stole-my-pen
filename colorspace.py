@@ -20,8 +20,8 @@ def colorspace_filter(image):
     upper_color = cv.getTrackbarPos(f'High x {alpha_slider_max}', title_window)
 
     # define range of the color in HSV
-    lower_color = np.array([lower_color,10,50], dtype=np.uint8)
-    upper_color = np.array([upper_color,255,255], dtype=np.uint8)
+    lower_color = np.array([lower_color,80,50], dtype=np.uint8)
+    upper_color = np.array([upper_color,255,220], dtype=np.uint8)
     print(f"Low: {lower_color}, High: {upper_color}")
     # Threshold the HSV image to get only the color required
     mask = cv.inRange(hsv, lower_color, upper_color)
