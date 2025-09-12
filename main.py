@@ -4,6 +4,7 @@ from vision import Vision
 import trackbar
 import colorspace
 import numpy as np
+import threshold
 
 def main():
     vision = Vision()
@@ -23,24 +24,20 @@ def main():
 
     cv2.destroyAllWindows()'''
 
-    try:
-        while True:
-            images, valid = vision.get_aligned_frames()
-            filtered_image = colorspace.colorspace_filter(images)
-            if not valid:
-                continue
-            #cv2.imshow('Original', images)
-            #cv2.imshow('Filtered', filtered_image)
-            result_image = np.hstack((images, filtered_image))
-            cv2.imshow('Result', result_image)
-            key = cv2.waitKey(1)
-            if key & 0xFF == ord('q') or key == 27:
-                cv2.destroyAllWindows()
-                break
-    except Exception as e:
-        print("Error:", e)
-    finally:
-        cv2.destroyAllWindows()
+    while True:
+        images, valid = vision.get_aligned_frames()
+        filtered_image = colorspace.colorspace_filter(images)
+        if not valid:
+            continue
+        #cv2.imshow('Original', images)
+        #cv2.imshow('Filtered', filtered_image)
+        result_image = np.hstack((images, filtered_image))
+        cv2.imshow('Result', result_image)
+        key = cv2.waitKey(1)
+        if key & 0xFF == ord('q') or key == 27:
+            cv2.destroyAllWindows()
+            break
+
 
 if __name__ == "__main__":
     main()
