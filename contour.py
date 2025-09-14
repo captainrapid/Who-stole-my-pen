@@ -22,6 +22,8 @@ def contour_filter(image, vision):
         cv.circle(image, (int(cx), int(cy)), 7, (0,0,255), -1)
         # Get the 3D position of the centroid
         x, y, z = position.position(vision, int(cx), int(cy))
+    else:
+        x, y, z = -1, -1, -1
     thre_bgr_copy = thre_bgr.copy()
     cv.drawContours(thre_bgr_copy, contour, -1, (0,255,0), 3)
     panel = np.hstack((image, thre_bgr, thre_bgr_copy))
