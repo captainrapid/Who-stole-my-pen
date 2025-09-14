@@ -26,4 +26,4 @@ def contour_filter(image, vision):
     cv.drawContours(thre_bgr_copy, contour, -1, (0,255,0), 3)
     panel = np.hstack((image, thre_bgr, thre_bgr_copy))
 
-    return panel
+    return panel, x, y, z
