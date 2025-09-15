@@ -7,14 +7,16 @@ import time
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
+from scipy.spatial.transform import Rotation as R
 
 class Calibration:
 
     def __init__(self):
         self.sample_points_x = [0.1, 0.15, 0.2]
+        self.sample_points_y = [-0.03, 0.03]
         self.sample_points_z = [0.15, 0.2]
-        self.sample_times = len(self.sample_points_x) * len(self.sample_points_z)
-        self.camera_sample_times = 50
+        self.sample_times = len(self.sample_points_x) * len(self.sample_points_z) * len(self.sample_points_y)
+        self.camera_sample_times = 10
 
     def sampling(self):
         vision = Vision()
@@ -26,28 +28,28 @@ class Calibration:
         robot.gripper.grasp()
 
         for x in self.sample_points_x:
-            for z in self.sample_points_z:
-                robot.arm.set_ee_pose_components(x=x, y=0.0, z=z, moving_time=2.0)
-                time.sleep(0.5)
-                p = robot.arm.get_ee_pose()
-                rx, ry, rz = p[0:3, 3]
-                print(f"Robot end-effector position: x: {rx}, y: {ry}, z: {rz}")
-                robot_coordinates.append((rx, ry, rz))
-                images, valid = vision.get_aligned_frames()
-                cx,cy,cz = 0,0,0
-                for _ in range(self.camera_sample_times):
-                    _, cx_temp, cy_temp, cz_temp = contour.contour_filter(images, vision)
-                    cx += cx_temp
-                    cy += cy_temp
-                    cz += cz_temp
-                    time.sleep(0.02)
-                cx /= self.camera_sample_times
-                cy /= self.camera_sample_times
-                cz /= self.camera_sample_times
-                camera_coordinates.append((cx, cy, cz))
-                if not valid:
-                    continue
-                #cv2.imshow('Result', panel)
+            for y in self.sample_points_y:
+                for z in self.sample_points_z:
+                    robot.arm.set_ee_pose_components(x=x, y=y, z=z, moving_time=2.0)
+                    time.sleep(0.2)
+                    p = robot.arm.get_ee_pose()
+                    rx, ry, rz = p[0:3, 3]
+                    print(f"Robot end-effector position: x: {rx}, y: {ry}, z: {rz}")
+                    robot_coordinates.append((rx, ry, rz))
+                    images, valid = vision.get_aligned_frames()
+                    cx,cy,cz = 0,0,0
+                    for _ in range(self.camera_sample_times):
+                        _, cx_temp, cy_temp, cz_temp = contour.contour_filter(images, vision)
+                        cx += cx_temp
+                        cy += cy_temp
+                        cz += cz_temp
+                        time.sleep(0.02)
+                    cx /= self.camera_sample_times
+                    cy /= self.camera_sample_times
+                    cz /= self.camera_sample_times
+                    camera_coordinates.append((cx, cy, cz))
+                    if not valid:
+                        continue
         robot.arm.go_to_sleep_pose()
         robot_shutdown()
         return robot_coordinates, camera_coordinates
@@ -81,12 +83,9 @@ class Calibration:
         cam_center = np.mean(arr_cam, axis=0)
         rob_centered = arr_rob - rob_center
         cam_centered = arr_cam - cam_center
-        rotation_matrix = np.zeros((3,3))
-        for i in range(len(rob_coord)):
-            numer = rob_centered[i].reshape((3,1)) @ cam_centered[i].reshape((3,1)).T
-            denom = cam_centered[i].T @ cam_centered[i]
-            rotation_matrix += numer / denom
-        rotation_matrix /= len(rob_coord)
+        rotation_matrix = R.align_vectors(rob_centered, cam_centered)[0].as_matrix()
+        rotation_matrix = np.array(rotation_matrix)
+
 
         # Then calculate translation
         translation = np.zeros((3,1))
@@ -138,6 +137,8 @@ def plot_coords(rob_coord, cam_coord):
 rob_coord, cam_coord = Calibration().sampling()
 plot_coords(rob_coord, cam_coord)
 rot_mat, tran_mat = Calibration().calculate_transform(rob_coord, cam_coord)
+transformed_cam = [rot_mat @ np.array(c).reshape((3,1)) + tran_mat for c in cam_coord]
+plot_coords(rob_coord, transformed_cam)
 print("Rotation Matrix:\n", rot_mat)
 print("Translation Matrix:\n", tran_mat)
 np.savetxt("Rotation_mat.txt", rot_mat, fmt='%s')

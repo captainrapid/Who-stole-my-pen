@@ -1,10 +1,8 @@
 import pyrealsense2 as rs
 import cv2
 from vision import Vision
-import trackbar
 import colorspace
 import numpy as np
-import threshold
 import contour
 
 def main():

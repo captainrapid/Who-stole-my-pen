@@ -14,8 +14,8 @@ def colorspace_filter(image):
 
     if not hasattr(colorspace_filter, "_inited"):
         cv.namedWindow(title_window, cv.WINDOW_NORMAL)     # safe if already exists
-        cv.createTrackbar(f'Low x {alpha_slider_max}', title_window, 49, alpha_slider_max, lambda v: None)
-        cv.createTrackbar(f'High x {alpha_slider_max}', title_window, 79, alpha_slider_max, lambda v: None)
+        cv.createTrackbar(f'Low x {alpha_slider_max}', title_window, 51, alpha_slider_max, lambda v: None)
+        cv.createTrackbar(f'High x {alpha_slider_max}', title_window, 88, alpha_slider_max, lambda v: None)
 
         colorspace_filter._inited = True
 

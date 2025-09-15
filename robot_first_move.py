@@ -25,6 +25,6 @@ while mode != 'q':
         robot.arm.set_ee_pose_components(x=0.1, y=0.0, z=0.3, pitch=-1.0, moving_time=1.0)
         robot.gripper.release()
     elif mode == "t":
-        robot.arm.set_ee_pose_components(x=0.0, y=0.0, z=0.35, pitch=-0.0, moving_time=1.0)
+        robot.arm.set_ee_pose_components(x=0.05, y=0.05, z=0.05, moving_time=1.0)
 
 robot_shutdown()
