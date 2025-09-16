@@ -17,17 +17,18 @@ def grab_pen(rot_matrix, tran_matrix):
     if not valid:
         return
     panel, cx, cy, cz = contour.contour_filter(images, vision)
-    cv2.imshow('Result', panel)
     if cx == -1 and cy == -1 and cz == -1:
         print("No object detected")
         return
     cam_coord = np.array([cx, cy, cz]).reshape((3,1))
     rob_coord = rot_matrix @ cam_coord + tran_matrix
     print(f"Calculated Robot Coordinates: x: {rob_coord[0][0]}, y: {rob_coord[1][0]}, z: {rob_coord[2][0]}")
+    radius = rob_coord[0][0] **2 + rob_coord[1][0] **2
+    radius = radius ** 0.5
+    robot.arm.set_ee_pose_components(x=rob_coord[0][0]/1.3, y=rob_coord[1][0]/1.3, z=rob_coord[2][0], moving_time=2.0)
     robot.arm.set_ee_pose_components(x=rob_coord[0][0], y=rob_coord[1][0], z=rob_coord[2][0], moving_time=2.0)
     robot.gripper.grasp()
-    time.sleep(0.5)
-    robot.arm.set_ee_pose_components(x=rob_coord[0][0], y=rob_coord[1][0], z=rob_coord[2][0]+0.1, moving_time=2.0)
+    robot.arm.set_ee_pose_components(x=-0.15, y=0.0, z=0.25, moving_time=2.0)
     robot.gripper.release()
     robot.arm.go_to_sleep_pose()
     robot_shutdown()
