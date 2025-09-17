@@ -11,7 +11,6 @@ def main():
 
     while True:
         images, valid = vision.get_aligned_frames()
-        #filtered_image = contour.contour_filter(images)
         panel, _, _, _ = contour.contour_filter(images, vision)
         if not valid:
             continue

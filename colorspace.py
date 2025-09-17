@@ -19,6 +19,7 @@ def colorspace_filter(image):
 
         colorspace_filter._inited = True
 
+    ###################Citation 2##################
     lower_color = cv.getTrackbarPos(f'Low x {alpha_slider_max}', title_window)
     upper_color = cv.getTrackbarPos(f'High x {alpha_slider_max}', title_window)
 
@@ -30,4 +31,5 @@ def colorspace_filter(image):
     mask_bgr = cv.cvtColor(mask, cv.COLOR_GRAY2BGR)
     # Bitwise-AND mask and original image
     res = cv.bitwise_and(image,image, mask= mask)
+    ###################Citation 2##################
     return mask_bgr, mask, res

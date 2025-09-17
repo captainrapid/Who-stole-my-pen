@@ -1,0 +1,4 @@
+Citation[1]:I used ChatGPT to plot all points into a 3D plot for debugging
+Citation[2]:https://docs.opencv.org/4.6.0/df/d9d/tutorial_py_colorspaces.html
+Citation[3]:https://nu-msr.github.io/hackathon/pen_challenge.html#first-moves-2-P-1
+Citation[4]:I was inspired and rearranged the code into class.https://github.com/IntelRealSense/librealsense/blob/master/wrappers/python/examples/align-depth2color.py

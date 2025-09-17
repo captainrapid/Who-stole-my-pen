@@ -24,7 +24,7 @@ class Vision:
         self.config.enable_stream(rs.stream.color, *self.color_res, rs.format.bgr8, self.fps)
 
 
-
+    #########################Citation 4#########################
     def get_frame(self):
         self.pipeline = rs.pipeline()
         # Start streaming
@@ -71,3 +71,4 @@ class Vision:
         depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.3), cv2.COLORMAP_JET)
         #images = np.hstack((bg_removed, depth_colormap))
         return bg_removed, valid
+    #########################Citation 4#########################

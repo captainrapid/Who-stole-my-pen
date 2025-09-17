@@ -2,7 +2,7 @@ from interbotix_xs_modules.xs_robot.arm import InterbotixManipulatorXS
 from interbotix_common_modules.common_robot.robot import robot_shutdown, robot_startup
 import time
 
-
+#################Citation 3##################
 # The robot object is what you use to control the robot
 robot = InterbotixManipulatorXS("px100", "arm", "gripper")
 
@@ -17,6 +17,7 @@ while mode != 'q':
     elif mode == "s":
         robot.arm.set_trajectory_time(2, 0.3)
         robot.arm.go_to_sleep_pose()
+        ###################Citation 3###################
     elif mode == "g":
         robot.gripper.release()
         robot.arm.set_ee_pose_components(x=0.2, y=0.0, z=0.04, pitch=1.4, moving_time=1.0)

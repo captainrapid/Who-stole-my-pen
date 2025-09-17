@@ -101,6 +101,7 @@ def plot_coords(rob_coord, cam_coord):
         print("Robot Coordinates: ", rob_coord[i])
         #print("Camera Coordinates: ", cam_coord[i])
 
+    ##################Citation 1##################
     # Convert lists of tuples into separate coordinate lists
     rx, ry, rz = zip(*rob_coord)
     cx, cy, cz = zip(*cam_coord)
@@ -131,6 +132,7 @@ def plot_coords(rob_coord, cam_coord):
     ax.legend()
 
     plt.show()
+    ###################Citation 1##################
 
 
     
