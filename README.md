@@ -3,6 +3,18 @@
 ## Overview
 This project provides a complete pipeline for calibrating a robot arm with a RealSense camera, detecting a pen using computer vision, and commanding the robot to pick up the pen. The robot arm is the Interbotix PX100 robotic arm, and the camera is a Realsense camera that returns both RGB stream and depth stream.
 
+## Main Procedures
+- Get RGB image and depth image from RealSense camera, and align the two streams together
+- Filter out the image farther than 1 meter to lower the impact of distant disturbance
+- Transform RGB image into HSV(hue, saturation, value) image, and use trackbar to filter out the color outside of the target object
+- Vague the image to give the target image a more uniform color, and then use a binary mask to select out the target
+- Draw contour for all objects in the binary mask and only show the object with the longest contour, then find its centroid
+  <img src="figure/picture1.jpg" width="400">
+- Transform the location of the centroid from pixel(where the centroid appear on the screen pixelwise and the depth from the depth camera) to the relative coordinates to the camera
+- Now we are working on the robot! Select several sample points(I chose 12 points) in the robot coordinate and get their coordinates from both camera coordinate and robot coordinate(due to the inaccuracy of the robot, it is better to also sample the coordinates from the robot instead of simply reading from initialization)
+  <img src="figure/picture2.jpg" width="400">
+- To calculate the transformation matrix from camera coordinate to the robot coordinate, first find the centroids for 12 points for robot coordinate and camera coordinate respectively, then draw vectors pointing from the two centroid to their corresponding 12 sample points, and finally get the translation matrix by dividing the robot vectors by the camera ones to get the rotation matrix, and getting the translation matrix by calucating the offset after rotation
+
 ## File Structure
 - `main.py`: Runs the real-time vision and detection loop.
 - `calibration.py`: Handles calibration between the camera and robot, including sampling and transformation calculation.
