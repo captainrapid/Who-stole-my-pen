@@ -10,13 +10,13 @@ This project provides a complete pipeline for calibrating a robot arm with a Rea
 - Transform RGB image into HSV(hue, saturation, value) image, and use trackbar to filter out the color outside of the target object
 - Vague the image to give the target image a more uniform color, and then use a binary mask to select out the target
 - Draw contour for all objects in the binary mask and only show the object with the longest contour, then find its centroid
-  <img src="figure/picture1.jpg" width="400">
+  <img src="figure/picture1.png" width="800">
 - Transform the location of the centroid from pixel(where the centroid appear on the screen pixelwise and the depth from the depth camera) to the relative coordinates to the camera
 - Now we are working on the robot! Select several sample points(I chose 12 points) in the robot coordinate and get their coordinates from both camera coordinate and robot coordinate(due to the inaccuracy of the robot, it is better to also sample the coordinates from the robot instead of simply reading from initialization)
 
-  <img src="figure/picture2.jpg" width="400">
+  <img src="figure/picture2.png" width="600">
 - To calculate the transformation matrix from camera coordinate to the robot coordinate, first find the centroids for 12 points for robot coordinate and camera coordinate respectively, then draw vectors pointing from the two centroid to their corresponding 12 sample points, and finally get the translation matrix by dividing the robot vectors by the camera ones to get the rotation matrix, and getting the translation matrix by calucating the offset after rotation
-  <img src="figure/picture3.jpg" width="400">
+  <img src="figure/picture3.png" width="600">
 - Finally use the transformation matrix to transform the camera coordinate of the centroid to robot coordinate, and move the robot end effector to the coordinate to STEAL THE PEN!
 
 
